@@ -147,11 +147,11 @@ void PrintFilteredData(const std::vector<FuelData>& filtered_data,
 }
 
 int main() {
-    std::ifstream file("input.txt");
-    if (!file.is_open()) {
-        std::cerr << "Error opening file input.txt" << std::endl;
+    std::vector<FuelData> data = ReadFuelDataFromFile("input.txt");
+    if (data.empty()) {
         return 1;
     }
+
 
     std::vector<fuel_Data> data;
     std::string line;
