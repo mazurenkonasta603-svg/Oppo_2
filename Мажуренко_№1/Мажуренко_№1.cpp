@@ -9,7 +9,7 @@
 
 class FuelData;
 
-
+FuelData ParseFuelData(const std::string& input_string);
 
 class fuel_Data {
 private:
