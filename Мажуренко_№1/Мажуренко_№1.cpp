@@ -55,6 +55,12 @@ public:
         }
         return *this;
     }
+    const std::string& GetFuelType() const { return fuel_type_; }
+    float GetPrice() const { return price_; }
+    const std::string& GetDate() const { return date_; }
+
+    friend std::ostream& operator<<(std::ostream& os, const FuelData& obj);
+};
 
     void parse_string(const std::string& _string) {
         std::regex re_date(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
