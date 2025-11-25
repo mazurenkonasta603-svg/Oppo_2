@@ -24,14 +24,19 @@ static std::string ExtractValue(const std::string& input_string,
 }
 
 
-class fuel_Data {
+class FuelData {
 private:
     std::string fuel_type_;
     std::string date_;
     float price_;
 
 public:
-    fuel_Data() = default;
+    FuelData() = default;
+
+    explicit FuelData(const std::string& fuel_type, const std::string& date,
+        float price)
+        : fuel_type_(fuel_type), date_(date), price_(price) {
+    }
 
     void parse_string(const std::string& _string) {
         std::regex re_date(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
