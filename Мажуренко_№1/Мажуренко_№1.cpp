@@ -134,6 +134,18 @@ std::vector<FuelData> ReadFuelDataFromFile(const std::string& filename) {
     return data;
 }
 
+void PrintFilteredData(const std::vector<FuelData>& filtered_data,
+    const std::string& target_fuel) {
+    if (filtered_data.empty()) {
+        std::cout << "No records found for fuel type " << target_fuel << std::endl;
+    }
+    else {
+        for (const auto& obj : filtered_data) {
+            std::cout << obj << std::endl;
+        }
+    }
+}
+
 int main() {
     std::ifstream file("input.txt");
     if (!file.is_open()) {
