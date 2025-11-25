@@ -38,6 +38,10 @@ public:
         : fuel_type_(fuel_type), date_(date), price_(price) {
     }
 
+    FuelData(const FuelData& other) = default;
+    FuelData& operator=(const FuelData& other) = default;
+
+
     void parse_string(const std::string& _string) {
         std::regex re_date(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
         std::regex re_price(R"(\d+([.,]\d+)?)");
