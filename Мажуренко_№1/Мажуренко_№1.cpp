@@ -104,10 +104,11 @@ bool CompareByPrice(const FuelData& a, const FuelData& b) {
     return a.GetPrice() < b.GetPrice();
 }
 
-std::vector<fuel_Data> f_fuel_type(const std::vector<fuel_Data>& data, const std::string& fuel_type) {
-    std::vector<fuel_Data> result;
+std::vector<FuelData> FilterByFuelType(const std::vector<FuelData>& data,
+    const std::string& fuel_type) {
+    std::vector<FuelData> result;
     for (const auto& item : data) {
-        if (item.get_fuel_type() == fuel_type) {
+        if (item.GetFuelType() == fuel_type) {
             result.push_back(item);
         }
     }
