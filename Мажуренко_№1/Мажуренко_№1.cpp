@@ -151,37 +151,14 @@ int main() {
     if (data.empty()) {
         return 1;
     }
-
-
-    std::vector<fuel_Data> data;
-    std::string line;
-
-    while (std::getline(file, line)) {
-        if (line.empty()) continue;
-        fuel_Data new_obj;
-        new_obj.parse_string(line);
-        data.push_back(new_obj);
-    }
-    file.close();
-
-    std::sort(data.begin(), data.end(), by_price);
+    std::sort(data.begin(), data.end(), CompareByPrice);
 
     std::string target_fuel;
-
     std::cout << "Enter fuel type to filter (e.g., DT, AI-95): ";
-
     std::getline(std::cin, target_fuel);
 
-    auto filtered_data = f_fuel_type(data, target_fuel);
-
-    if (filtered_data.empty()) {
-        std::cout << "No records found for fuel type: " << target_fuel << std::endl;
-    }
-    else {
-        for (const auto& obj : filtered_data) {
-            std::cout << obj << std::endl;
-        }
-    }
+    auto filtered_data = FilterByFuelType(data, target_fuel);
+    PrintFilteredData(filtered_data, target_fuel);
 
     return 0;
 }
