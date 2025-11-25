@@ -115,6 +115,25 @@ std::vector<FuelData> FilterByFuelType(const std::vector<FuelData>& data,
     return result;
 }
 
+std::vector<FuelData> ReadFuelDataFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return {};
+    }
+
+    std::vector<FuelData> data;
+    std::string line;
+
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
+        FuelData new_obj = ParseFuelData(line);
+        data.emplace_back(std::move(new_obj));
+    }
+    file.close();
+    return data;
+}
+
 int main() {
     std::ifstream file("input.txt");
     if (!file.is_open()) {
