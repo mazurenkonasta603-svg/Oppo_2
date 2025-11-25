@@ -47,6 +47,15 @@ public:
         price_(other.price_) {
     }
 
+    FuelData& operator=(FuelData&& other) noexcept {
+        if (this != &other) {
+            fuel_type_ = std::move(other.fuel_type_);
+            date_ = std::move(other.date_);
+            price_ = other.price_;
+        }
+        return *this;
+    }
+
     void parse_string(const std::string& _string) {
         std::regex re_date(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
         std::regex re_price(R"(\d+([.,]\d+)?)");
