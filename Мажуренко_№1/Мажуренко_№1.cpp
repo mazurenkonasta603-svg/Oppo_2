@@ -100,8 +100,8 @@ std::ostream& operator<<(std::ostream& os, const fuel_Data& obj) {
     return os;
 }
 
-bool by_price(const fuel_Data& a, const fuel_Data& b) {
-    return a.get_price() < b.get_price();
+bool CompareByPrice(const FuelData& a, const FuelData& b) {
+    return a.GetPrice() < b.GetPrice();
 }
 
 std::vector<fuel_Data> f_fuel_type(const std::vector<fuel_Data>& data, const std::string& fuel_type) {
