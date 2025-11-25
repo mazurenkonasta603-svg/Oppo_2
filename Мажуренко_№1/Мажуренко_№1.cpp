@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <iomanip> 
 
+class FuelData;
+
+
 
 class fuel_Data {
 private:
