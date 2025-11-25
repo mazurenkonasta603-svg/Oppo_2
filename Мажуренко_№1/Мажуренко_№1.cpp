@@ -11,6 +11,19 @@ class FuelData;
 
 FuelData ParseFuelData(const std::string& input_string);
 
+static std::string ExtractValue(const std::string& input_string,
+    const std::regex& pattern) {
+    std::smatch match;
+    if (std::regex_search(input_string, match, pattern)) {
+        if (match.size() > 1 && match[1].length() > 0) {
+            return match[1].str();
+        }
+        return match[0].str();
+    }
+    return "";
+}
+
+
 class fuel_Data {
 private:
     std::string fuel_type_;
