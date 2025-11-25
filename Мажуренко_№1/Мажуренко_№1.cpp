@@ -62,13 +62,6 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const FuelData& obj);
 };
 
-std::ostream& operator<<(std::ostream& os, const FuelData& obj) {
-    os << "Fuel type: " << obj.fuel_type_ << " Date: " << obj.date_
-        << " Price: " << std::fixed << std::setprecision(2) << obj.price_;
-    return os;
-}
-
-
 FuelData ParseFuelData(const std::string& input_string) {
     std::regex date_pattern(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
     std::regex price_decimal_pattern(R"(\d+[.,]\d+)");
