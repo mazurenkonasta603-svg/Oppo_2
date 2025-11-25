@@ -62,42 +62,52 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const FuelData& obj);
 };
 
-    void parse_string(const std::string& _string) {
-        std::regex re_date(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
-        std::regex re_price(R"(\d+([.,]\d+)?)");
-        std::regex re_word(R"(["](.*?)["])");
+FuelData ParseFuelData(const std::string& input_string) {
+    std::regex date_pattern(R"((\d{4}[-./]\d{2}[-./]\d{2}|\d{2}[-./]\d{2}[-./]\d{4}))");
+    std::regex price_decimal_pattern(R"(\d+[.,]\d+)");
+    std::regex price_integer_pattern(R"(\d+)");
+    std::regex fuel_type_pattern(R"(["]([^"]*)["])");
 
-        std::vector<std::string> tokens;
-        std::stringstream ss(_string);
-        std::string token;
-        while (ss >> token) {
-            tokens.push_back(token);
+    std::string tmp = input_string;
+    std::smatch match;
+
+    // Fuel type: ищем в кавычках
+    std::string fuel;
+    if (std::regex_search(tmp, match, fuel_type_pattern)) {
+        fuel = match[1].str(); // внутренняя группа без кавычек
+        tmp.erase(match.position(), match.length());
+    }
+
+    // Date: ищем дату
+    std::string date;
+    if (std::regex_search(tmp, match, date_pattern)) {
+        date = match[0].str();
+        tmp.erase(match.position(), match.length());
+    }
+
+    // Price: в оставшейся строке сначала ищем число с десятичной частью,
+    // если нет — любое целое число
+    std::string price_str;
+    if (std::regex_search(tmp, match, price_decimal_pattern)) {
+        price_str = match[0].str();
+    }
+    else if (std::regex_search(tmp, match, price_integer_pattern)) {
+        price_str = match[0].str();
+    }
+
+    // Нормализация запятой в точку и конвертация в float
+    std::replace(price_str.begin(), price_str.end(), ',', '.');
+    float price = 0.0f;
+    if (!price_str.empty()) {
+        try {
+            price = std::stof(price_str);
         }
-        std::smatch match;
-        for (const auto& part : tokens) {
-            if (std::regex_match(part, re_date)) {
-                date_ = part;
-            }
-            else if (std::regex_match(part, re_price)) {
-                std::string p = part;
-                std::replace(p.begin(), p.end(), ',', '.');
-                price_ = std::stof(p);
-            }
-            else if (std::regex_match(part, match, re_word)) {
-                fuel_type_ = match[1].str();
-            }
+        catch (const std::exception&) {
+            price = 0.0f;
         }
     }
 
-    const std::string& get_fuel_type() const { return fuel_type_; };
-    float get_price() const { return price_; };
-
-    friend std::ostream& operator<<(std::ostream& os, const fuel_Data& obj);
-};
-
-std::ostream& operator<<(std::ostream& os, const fuel_Data& obj) {
-    os << "Fuel type: " << obj.fuel_type_ << " Date: " << obj.date_ << " Price: " << std::fixed << std::setprecision(2) << obj.price_;
-    return os;
+    return FuelData(fuel, date, price);
 }
 
 bool CompareByPrice(const FuelData& a, const FuelData& b) {
